@@ -58,6 +58,39 @@ public class MainWindow {
         }
     }
 
+    /**
+     * Opens a list.
+     */
+    @FXML
+    private void handleList() {
+        String userCommandText = "list";
+        handleEasyCommands(userCommandText);
+    }
+
+    /**
+     * List down all the functions in the program.
+     */
+    @FXML
+    private void handleHelp() {
+        String userCommandText = "help";
+        handleEasyCommands(userCommandText);
+    }
+
+    private void handleEasyCommands(String userCommandText) {
+        try {
+            CommandResult result = logic.execute(userCommandText);
+            if(isExitCommand(result)){
+                exitApp();
+                return;
+            }
+            displayResult(result);
+            clearCommandInput();
+        } catch (Exception e) {
+            display(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
     private void exitApp() throws Exception {
         mainApp.stop();
     }
@@ -105,6 +138,14 @@ public class MainWindow {
      */
     private void display(String... messages) {
         outputConsole.setText(outputConsole.getText() + new Formatter().format(messages));
+    }
+
+    /**
+     * Closes the application.
+     */
+    @FXML
+    private void handleExit() {
+        System.exit(0);
     }
 
 }
